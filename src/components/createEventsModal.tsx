@@ -250,10 +250,10 @@ export function CreateEventModal({ open, onClose }: CreateEventModalProps) {
             </button>
             <button
               type="submit"
-              disabled={createEvent.isLoading}
+              disabled={createEvent.isPending}
               className="flex-1 px-4 py-2.5 bg-blue-600 text-white font-inter font-medium rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {createEvent.isLoading ? "Creating..." : "Create Event"}
+              {createEvent.isPending ? "Creating..." : "Create Event"}
             </button>
           </div>
         </form>
