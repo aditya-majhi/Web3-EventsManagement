@@ -6,7 +6,7 @@ export const createEventSchema = z.object({
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
   location: z.string().min(1, "Location is required"),
-  coverImage: z.string().url().optional(),
+  coverImage: z.string().startsWith("https://").optional().or(z.literal("")),
   status: z.enum(["draft", "published"]).default("draft"),
   isFeatured: z.boolean().default(false),
 });
