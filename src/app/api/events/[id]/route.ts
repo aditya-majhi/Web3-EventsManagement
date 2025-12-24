@@ -3,13 +3,12 @@ import { updateEventSchema } from "@/validations/events.validations";
 import { eventsTableService } from "@/services/events.services";
 import type { ApiResponse, Event } from "@/types/types";
 
-type RouteParams = {
-    params: { id: string };
-};
 
 export async function GET(
     _req: NextRequest,
-    { params }: RouteParams
+    { params }: {
+        params: Promise<{ id: string }>;
+    }
 ): Promise<NextResponse<ApiResponse<Event | null>>> {
     try {
         const { id } = await params;
@@ -35,7 +34,9 @@ export async function GET(
 
 export async function PUT(
     req: NextRequest,
-    { params }: RouteParams
+    { params }: {
+        params: Promise<{ id: string }>;
+    }
 ): Promise<NextResponse<ApiResponse<Event>>> {
     try {
         const body = await req.json();
@@ -65,7 +66,9 @@ export async function PUT(
 
 export async function DELETE(
     _req: NextRequest,
-    { params }: RouteParams
+    { params }: {
+        params: Promise<{ id: string }>;
+    }
 ): Promise<NextResponse<ApiResponse<null>>> {
     try {
 

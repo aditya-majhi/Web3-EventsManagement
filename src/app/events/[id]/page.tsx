@@ -1,8 +1,8 @@
 "use client";
 
-import React, { use, useState } from "react";
+import { use, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useEventById } from "@/hooks/query.hooks";
+import { useDeleteEvent, useEventById } from "@/hooks/query.hooks";
 import { UpdateEventModal } from "@/components/updateEventsModal";
 
 export default function EventDetailsPage({
@@ -14,6 +14,8 @@ export default function EventDetailsPage({
   const router = useRouter();
   const { data: event, isLoading } = useEventById(id);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
+
+  const deleteEvent = useDeleteEvent();
 
   if (isLoading) {
     return (
@@ -41,6 +43,12 @@ export default function EventDetailsPage({
       minute: "2-digit",
       hour12: true,
     });
+  };
+
+  const handleDelete = (id: string) => {
+    if (confirm("Are you sure you want to delete this event?")) {
+      deleteEvent.mutate(id);
+    }
   };
 
   return (
@@ -97,7 +105,7 @@ export default function EventDetailsPage({
                             : "bg-yellow-400"
                         }`}
                       ></span>
-                      {event.status === "published" ? "Draft" : "Draft"}
+                      {event.status === "published" ? "Published" : "Draft"}
                     </span>
                   </div>
                 </div>
@@ -120,22 +128,10 @@ export default function EventDetailsPage({
                       />
                     </svg>
                   </button>
-                  <button className="p-2 bg-[#0a0e1a] border border-[#252b3b] rounded-lg hover:bg-[#13182a] transition-colors">
-                    <svg
-                      className="w-5 h-5 text-gray-400"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                      />
-                    </svg>
-                  </button>
-                  <button className="p-2 bg-[#0a0e1a] border border-[#252b3b] rounded-lg hover:bg-[#13182a] transition-colors">
+                  <button
+                    className="p-2 bg-[#0a0e1a] border border-[#252b3b] rounded-lg hover:bg-[#13182a] transition-colors"
+                    onClick={() => handleDelete(event.id)}
+                  >
                     <svg
                       className="w-5 h-5 text-gray-400"
                       fill="none"
